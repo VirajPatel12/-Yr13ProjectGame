@@ -11,5 +11,3 @@ main.geometry('1000x1000')
 
 # adding extra wedgets below
 main.mainloop()
-
- 
