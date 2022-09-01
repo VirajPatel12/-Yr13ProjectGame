@@ -3,21 +3,25 @@ import pygame
 import os
 import time
 import random
-import tkinter
 from pygame.locals import *
 pygame.font.init()
-main = tkinter.Tk()
-main.title("Space Invaders")
-main.geometry('1000x1000')
-# adding extra wedgets below
-main.mainloop()
 
+black = (0,0,0)
+size = (700, 600)
+screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Space Invaders")
+clock = pygame.time.Clock()
+pygame.display.update()
 
-# Background load image command + scales it according to dimensions.
-BACKGROUND = pygame.image.load('Background.png')
+# waint until user quits
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-#create screen 
-screen = pygame.display.set_mode((800, 600))
+pygame.quit()
+
 #list variables below
 running = True
 while running:
