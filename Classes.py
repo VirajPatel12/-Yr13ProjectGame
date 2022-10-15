@@ -1,46 +1,29 @@
 import pygame
-
-pygame.init()
-
-# Setting screen variable. Screen is the window of the game.
-
-screen = pygame.display.set_mode((1280, 720))
-pygame.display.set_caption("Menu")
-pygame.display.update()
-
-start_img = pygame.image.load('play.jpeg').convert_alpha()
-
-# Button class
-
-class Button():
+class Button(): # button class to import
     def __init__(self, x, y, image, scale):
         width = image.get_width()
         height = image.get_height()
-        self.image = pygame.transform.scale(image, (int(width * scale), ()))
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+        self.clicked = False
 
-    def draw(self):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+    def draw(self, surface):
+        action = False
+        # receives mouse button
+        pos = pygame.mouse.get_pos()
 
-#Create button instances
-start_button = Button(100, 200, start_img)
+        # checks clicked conditions
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
 
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
 
-run = True
-while run:
-    # Background Colour (function to change colour of screen)
-    screen.fill((52, 78, 91))
-    start_button.draw()
+        # draw the button
+        surface.blit(self.image, (self.rect.x, self.rect.y))
 
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                game_paused = True
-                print("Pause")
-        if event.type == pygame.QUIT:
-            run = False
+        return action
 
-        pygame.display.update()
-
-pygame.quit()
