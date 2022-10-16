@@ -1,10 +1,12 @@
 import pygame, sys
+import Button
 
 pygame.init()
 
 # Setting screen variable. Screen is the window of the game.
-
-screen = pygame.display.set_mode((1280, 720))
+ScreenWidth = 1280
+ScreenHeight = 720
+screen = pygame.display.set_mode((ScreenWidth, ScreenHeight))
 pygame.display.set_caption("Menu")
 pygame.display.update()
 
@@ -14,13 +16,20 @@ game_paused = False
 # Define Fonts
 font = pygame.font.SysFont("arialblack", 40)
 
+# Define Colour
+TEXT_COL = (255, 255, 255)
+
+# button images
+resume_image = pygame.image.load("ResumeButton.png").convert_alpha()
+quit_image = pygame.image.load("QuitButton.png").convert_alpha()
+
+# button instances
+resume_button = Button.Button(400, 125, resume_image, 1)
+quit_button = Button.Button(430, 400, quit_image, 1)
+
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
-
-# Define Colours
-TEXT_COL = (255, 255, 255)
-
 
 run = True
 while run:
@@ -28,9 +37,13 @@ while run:
     screen.fill((52, 78, 91))
 
     if game_paused == True:
-        pass
+        if resume_button.draw(screen):
+            game_paused = False
+        if quit_button.draw(screen):
+            run = False
     else:
-        draw_text("Press space to pause", font, TEXT_COL, 160, 250)
+        draw_text("Press space to pause", font, TEXT_COL, 400, 280) # alligns and draws font
+
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:

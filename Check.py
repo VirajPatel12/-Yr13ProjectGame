@@ -6,12 +6,12 @@ screen = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Button Demo")
 
 # Game loop
-run = True:
+run = True
 while run:
 
 
     for event in pygame.event.get():
-        if pygame.type == pygame.QUIT:
+        if event.type == pygame.QUIT:
             run = False
 
     pygame.display.update()
