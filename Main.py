@@ -26,9 +26,10 @@ resume_image = pygame.image.load("ResumeButton.png").convert_alpha()
 quit_image = pygame.image.load("QuitButton.png").convert_alpha()
 
 
-# button instances
-resume_button = ButtonClass.Button(-50, 0, resume_image, 1)
-quit_button = ButtonClass.Button(-30, 170, quit_image, 1)
+# button instances, again rect has coordinates of text
+
+quit_button = ButtonClass.Button(-30, 150, quit_image, 1)
+again_rect = Rect(ScreenWidth // 2 - 80, ScreenHeight // 2, 160, 50)
 
 # define temporary variables
 line_width = 6
@@ -107,7 +108,7 @@ def check_winner():
 
 
 def draw_bg():
-    screen.fill((100, 100, 100))
+    screen.fill((0,0,0))
 
 for x in range(3):
     row = [0] * 3
@@ -121,6 +122,11 @@ def draw_winner(winner):
     pygame.draw.rect(screen, green, (ScreenWidth // 2 - 100, ScreenHeight // 2 - 60, 200, 50))
     screen.blit(win_img, (ScreenWidth // 2 - 100, ScreenHeight // 2 - 50))
 
+    again_text = 'Play Again?' # dimensions
+    again_img = font.render(again_text, True, blue)
+    pygame.draw.rect(screen, green, again_rect)
+    screen.blit(again_img, (ScreenWidth // 2 - 80, ScreenHeight // 2 + 10))
+
 
 
 run = True
@@ -131,8 +137,7 @@ while run:
 
     if game_paused == True: # below makes space = pause, which puts a menu.
         draw_bg()
-        if resume_button.draw(screen):
-            game_paused = False
+        draw_text("Press Space", font, TEXT_COL, 10, 0)
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -142,7 +147,7 @@ while run:
         if quit_button.draw(screen):
             run = False
     else:
-        draw_text("Press space to pause", font, TEXT_COL, 0, 0) # alligns and draws font
+        draw_text("Press Space", font, TEXT_COL, 10, 0) # alligns and draws font
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -169,8 +174,7 @@ while run:
     if game_over == True:
         if game_paused == True:
             draw_bg()
-            if resume_button.draw(screen):
-                game_paused = False
+            draw_text("Press space to unpause", font, TEXT_COL, 0, 0)
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -181,6 +185,23 @@ while run:
                 run = False
         else:
             draw_winner(winner)
+            # check if user has clicked on again button
+            if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
+                clicked = True
+            if event.type == pygame.MOUSEBUTTONUP and clicked == True:
+                clicked = False
+                pos = pygame.mouse.get_pos() # has mouse position
+                if again_rect.collidepoint(pos):
+                    # variable reset
+                    markers = []
+                    pos = []
+                    player = 1
+                    winner = 0
+                    game_over = False
+                    for x in range(3):
+                        row = [0] * 3
+                        markers.append(row)
+
 
     pygame.display.update()
 
