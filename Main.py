@@ -25,9 +25,10 @@ TEXT_COL = (255, 255, 255)
 resume_image = pygame.image.load("ResumeButton.png").convert_alpha()
 quit_image = pygame.image.load("QuitButton.png").convert_alpha()
 
+
 # button instances
-resume_button = ButtonClass.Button(0, 0, resume_image, 1)
-quit_button = ButtonClass.Button(430, 400, quit_image, 1)
+resume_button = ButtonClass.Button(-50, 0, resume_image, 1)
+quit_button = ButtonClass.Button(-30, 170, quit_image, 1)
 
 # define temporary variables
 line_width = 6
@@ -37,7 +38,7 @@ pos = []
 player = 1
 winner = 0
 game_over = False
-pos = (0, 0)
+
 
 # colours
 
@@ -114,8 +115,13 @@ for x in range(3):
 
 print(markers) # lists different numbers
 
-def draw_winner():
+def draw_winner(winner):
     win_text = 'Player' + str(winner) + " Wins!"
+    win_img = font.render(win_text, True, blue)
+    pygame.draw.rect(screen, green, (ScreenWidth // 2 - 100, ScreenHeight // 2 - 60, 200, 50))
+    screen.blit(win_img, (ScreenWidth // 2 - 100, ScreenHeight // 2 - 50))
+
+
 
 run = True
 while run:
@@ -127,6 +133,11 @@ while run:
         draw_bg()
         if resume_button.draw(screen):
             game_paused = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    game_paused = False
 
         if quit_button.draw(screen):
             run = False
@@ -155,7 +166,22 @@ while run:
                     check_winner()
 
 
+    if game_over == True:
+        if game_paused == True:
+            draw_bg()
+            if resume_button.draw(screen):
+                game_paused = False
 
-        pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        game_paused = False
+
+            if quit_button.draw(screen):
+                run = False
+        else:
+            draw_winner(winner)
+
+    pygame.display.update()
 
 pygame.quit()
