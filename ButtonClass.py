@@ -1,6 +1,6 @@
-import pygame
-class Button(): # button class to import
-    def __init__(self, x, y, image, scale):
+import pygame # Imports basic
+class Button(): # Button class to import to Main.py
+    def __init__(self, x, y, image, scale): # Function within class to make Rect for button/image/scale
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
@@ -8,12 +8,12 @@ class Button(): # button class to import
         self.rect.topleft = (x, y)
         self.clicked = False
 
-    def draw(self, surface):
+    def draw(self, surface): # Draws the button itself, and the mouse interaction for tthe class
         action = False
-        # receives mouse button
+        # Recieves the mouse button
         pos = pygame.mouse.get_pos()
 
-        # checks clicked conditions
+        # Checked the clicked conditions
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
@@ -22,8 +22,8 @@ class Button(): # button class to import
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
 
-        # draw the button
+        # Draws button
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
-        return action
+        return action # Returns/turns off
 
